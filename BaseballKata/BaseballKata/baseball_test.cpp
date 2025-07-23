@@ -18,6 +18,14 @@ public:
 			//PASS
 		}
 	}
+
+	void CompareResult(string guessNumber, int expectedStrikes, int expectedBalls)
+	{
+		GuessResult result = game.guess(guessNumber);
+		EXPECT_EQ((expectedStrikes == Baseball::MAX_DIGITS), result.solved);
+		EXPECT_EQ(expectedStrikes, result.strikes);
+		EXPECT_EQ(expectedBalls, result.balls);
+	}
 };
 
 TEST_F(BaseballFixture, ThrowExceptionWhenInvalidCase)
@@ -29,9 +37,24 @@ TEST_F(BaseballFixture, ThrowExceptionWhenInvalidCase)
 
 TEST_F(BaseballFixture, ReturnSolvedResultIfMatchedNumber)
 {
+	string guessNumber = "123";
+	int expectedStrikes = 3;
+	int expectedBalls = 0;
+	CompareResult(guessNumber, expectedStrikes, expectedBalls);
+}
 
-	GuessResult result = game.guess("123");
-	EXPECT_TRUE(result.solved);
-	EXPECT_EQ(3, result.strikes);
-	EXPECT_EQ(0, result.balls);
+TEST_F(BaseballFixture, ReturnSolvedResultWith2S0B)
+{
+	string guessNumber = "127";
+	int expectedStrikes = 2;
+	int expectedBalls = 0;
+	CompareResult(guessNumber, expectedStrikes, expectedBalls);
+}
+
+TEST_F(BaseballFixture, ReturnSolvedResultWith1S2B)
+{
+	string guessNumber = "132";
+	int expectedStrikes = 1;
+	int expectedBalls = 2;
+	CompareResult(guessNumber, expectedStrikes, expectedBalls);
 }
